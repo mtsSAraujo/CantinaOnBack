@@ -1,15 +1,14 @@
 version: '3.8'
 
 services:
-  # Serviço da aplicação Spring Boot
   app:
     build:
-      context: . # Usa o Dockerfile na raiz do projeto
+      context: .
     container_name: manutencao-app
     ports:
-      - "8080:8080" # Expõe a porta 8080 da aplicação
+      - "8080:8080"
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:h2:mem:manutencao_db
+      - SPRING_DATASOURCE_URL=jdbc:h2:tcp://h2-db:1521/./manutencao_db  # Banco em disco acessível via TCP
       - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
       - SPRING_DATASOURCE_USERNAME=sa
       - SPRING_DATASOURCE_PASSWORD=
@@ -19,18 +18,16 @@ services:
     depends_on:
       - h2-db
 
-  # Serviço do banco de dados H2 (opcional, pois o H2 é em memória)
   h2-db:
-    image: oscarfonts/h2 # Imagem oficial do H2
+    image: oscarfonts/h2
     container_name: h2-db
     ports:
-      - "1521:1521" # Porta padrão do H2
-      - "8082:8082" # Porta do console do H2
+      - "1521:1521"   # Porta para acesso via JDBC
+      - "8082:8082"   # Porta para o H2 Console
     environment:
-      - H2_OPTIONS=-web -webAllowOthers -webPort 8082
+      - H2_OPTIONS=-tcp -tcpAllowOthers -tcpPort 1521 -web -webAllowOthers -webPort 8082 -ifNotExists
     volumes:
-      - h2-data:/opt/h2-data # Persistência de dados (opcional)
+      - h2-data:/opt/h2-data   # Volume para persistência de dados
 
-# Volume para persistir dados do H2 (opcional)
 volumes:
   h2-data:
