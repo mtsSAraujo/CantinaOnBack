@@ -1,6 +1,7 @@
 package gov.fatec.manumanager.controller.impl;
 
 import gov.fatec.manumanager.controller.UsuarioController;
+import gov.fatec.manumanager.dto.UsuarioRequestDto;
 import gov.fatec.manumanager.dto.UsuarioResponseDto;
 import gov.fatec.manumanager.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,10 @@ public class UsuarioControllerImpl implements UsuarioController {
     @Override
     public ResponseEntity<List<UsuarioResponseDto>> findAll() {
         return new ResponseEntity<>(usuarioService.findAll(), HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<UsuarioResponseDto> createUser(UsuarioRequestDto usuarioRequestDto) {
+        return new ResponseEntity<>(usuarioService.createUser(usuarioRequestDto), HttpStatus.OK);
     }
 }
