@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   app:
     build:
@@ -7,27 +5,4 @@ services:
     container_name: manutencao-app
     ports:
       - "8080:8080"
-    environment:
-      - SPRING_DATASOURCE_URL=jdbc:h2:tcp://h2-db:1521/./manutencao_db  # Banco em disco acessível via TCP
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=org.h2.Driver
-      - SPRING_DATASOURCE_USERNAME=sa
-      - SPRING_DATASOURCE_PASSWORD=
-      - SPRING_H2_CONSOLE_ENABLED=true
-      - SPRING_H2_CONSOLE_PATH=/h2-console
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-    depends_on:
-      - h2-db
-
-  h2-db:
-    image: oscarfonts/h2
-    container_name: h2-db
-    ports:
-      - "1521:1521"   # Porta para acesso via JDBC
-      - "8082:8082"   # Porta para o H2 Console
-    environment:
-      - H2_OPTIONS=-tcp -tcpAllowOthers -tcpPort 1521 -web -webAllowOthers -webPort 8082 -ifNotExists
-    volumes:
-      - h2-data:/opt/h2-data   # Volume para persistência de dados
-
-volumes:
-  h2-data:
+    network_mode: bridge
