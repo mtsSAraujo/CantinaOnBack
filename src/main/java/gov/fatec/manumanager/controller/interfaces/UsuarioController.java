@@ -1,4 +1,4 @@
-package gov.fatec.manumanager.controller;
+package gov.fatec.manumanager.controller.interfaces;
 
 import gov.fatec.manumanager.dto.UsuarioRequestDto;
 import gov.fatec.manumanager.dto.UsuarioResponseDto;

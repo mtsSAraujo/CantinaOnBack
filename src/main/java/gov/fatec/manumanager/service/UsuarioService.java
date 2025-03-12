@@ -37,7 +37,7 @@ public class UsuarioService {
     public UsuarioResponseDto createUser(UsuarioRequestDto usuarioRequestDto) {
         Usuario usuarioCriado = UsuarioConverter.fromDto(usuarioRequestDto);
         usuarioCriado.setSenha(passwordEncoder.encode(usuarioRequestDto.senha()));
-
+        // Verificar se ja existe usuário com esse email e retornar exceção.
         return UsuarioConverter.fromEntity(usuarioRepository.save(usuarioCriado));
     }
 }

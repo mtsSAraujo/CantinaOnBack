@@ -1,7 +1,7 @@
 package gov.fatec.manumanager.config;
 
 import gov.fatec.manumanager.service.auth.UsuarioAutenticacaoService;
-import gov.fatec.manumanager.utils.jwt.JwtUtil;
+import gov.fatec.manumanager.utils.jwt.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,10 +9,12 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter;
 
 @Configuration
@@ -21,7 +23,7 @@ import org.springframework.security.web.header.writers.XXssProtectionHeaderWrite
 public class SecurityConfig {
 
     private final UsuarioAutenticacaoService customUserDetailsService;
-    private final JwtUtil jwtUtil;
+    private final JwtFilter jwtFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -30,22 +32,14 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/h2-console/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html/**",
                                 "/api-docs/**",
                                 "/swagger-resources/**",
                                 "/webjars/**",
-                                "/auth/**",
-                                "/actuator/**"
+                                "/auth/**"
                         ).permitAll()
-                        .requestMatchers("/cliente/**").hasRole("CLIENTE")
-                        .requestMatchers("/tecnico/**").hasRole("TECNICO")
-                        .requestMatchers("/admin/**").hasRole("ADMINISTRADOR")
                         .anyRequest().authenticated()
                 )
-                .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "swagger-ui.html")
-                        .disable()
-                )
+                .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                         .xssProtection(xss -> xss
@@ -54,7 +48,8 @@ public class SecurityConfig {
                         .contentSecurityPolicy(csp -> csp
                                 .policyDirectives("frame-ancestors 'self'")
                         )
-                );
+                )
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Adiciona o filtro JWT
 
         return http.build();
     }

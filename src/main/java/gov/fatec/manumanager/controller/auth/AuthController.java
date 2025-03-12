@@ -1,7 +1,7 @@
 package gov.fatec.manumanager.controller.auth;
 
 import gov.fatec.manumanager.service.auth.UsuarioAutenticacaoService;
-import gov.fatec.manumanager.utils.jwt.JwtUtil;
+import gov.fatec.manumanager.utils.jwt.service.JwtService;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
@@ -20,18 +20,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    private final JwtService jwtService;
     private final UsuarioAutenticacaoService customUserDetailsService;
 
     @PostMapping("/login")
     @ApiResponses(
             value = {
-                @ApiResponse(responseCode = "200")
-    })
+                    @ApiResponse(responseCode = "200")
+            }
+    )
     public String login(@RequestParam String email, @RequestParam String senha) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(email, senha));
+
         UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
-        return jwtUtil.generateToken(userDetails);
+
+        return jwtService.generateToken(userDetails.getUsername(), userDetails.getAuthorities());
     }
 }

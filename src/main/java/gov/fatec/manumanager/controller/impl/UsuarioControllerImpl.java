@@ -1,6 +1,6 @@
 package gov.fatec.manumanager.controller.impl;
 
-import gov.fatec.manumanager.controller.UsuarioController;
+import gov.fatec.manumanager.controller.interfaces.UsuarioController;
 import gov.fatec.manumanager.dto.UsuarioRequestDto;
 import gov.fatec.manumanager.dto.UsuarioResponseDto;
 import gov.fatec.manumanager.service.UsuarioService;
