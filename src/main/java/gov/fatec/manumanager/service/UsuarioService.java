@@ -7,6 +7,7 @@ import gov.fatec.manumanager.entity.Usuario;
 import gov.fatec.manumanager.exception.models.UserAlreadyExistsException;
 import gov.fatec.manumanager.exception.models.UserNotFoundException;
 import gov.fatec.manumanager.repository.UsuarioRepository;
+import gov.fatec.manumanager.utils.TiposDeUsuario;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,12 +42,17 @@ public class UsuarioService {
     public UsuarioResponseDto createUser(UsuarioRequestDto usuarioRequestDto) {
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(usuarioRequestDto.email());
 
-        if(usuarioEncontrado.isPresent()) {
+        if (usuarioEncontrado.isPresent()) {
             throw new UserAlreadyExistsException("Email já cadastrado no sistema");
         }
 
         Usuario usuarioCriado = UsuarioConverter.fromDto(usuarioRequestDto);
         usuarioCriado.setSenha(passwordEncoder.encode(usuarioRequestDto.senha()));
+
+        // Criar tecnico associado a esse usuário com valores default para especialização, disponibilidade e atribuições.
+        if(usuarioRequestDto.tipoUsuario().equals(TiposDeUsuario.TECNICO)) {
+            throw new RuntimeException();
+        }
 
         return UsuarioConverter.fromEntity(usuarioRepository.save(usuarioCriado));
     }

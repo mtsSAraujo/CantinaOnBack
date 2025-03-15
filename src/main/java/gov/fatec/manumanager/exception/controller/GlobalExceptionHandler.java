@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,7 +27,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InternalServerError.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseEntity<ExceptionResponseBody> handleUserNotFoundException(InternalServerError exc) {
+    public ResponseEntity<ExceptionResponseBody> handleGenericException(InternalServerError exc) {
         ExceptionResponseBody error = new ExceptionResponseBody();
 
         error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
@@ -57,7 +59,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ExceptionResponseBody> handleUserNotFoundException(BadCredentialsException exc) {
+    public ResponseEntity<ExceptionResponseBody> handleBadCredentialsExceptionException(BadCredentialsException exc) {
         ExceptionResponseBody error = new ExceptionResponseBody();
 
         error.setPath("/login");
@@ -73,7 +75,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Forbidden.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ResponseEntity<ExceptionResponseBody> handleGenericException(Forbidden exc) {
+    public ResponseEntity<ExceptionResponseBody> handleGenericForbiddenException(Forbidden exc) {
         ExceptionResponseBody error = new ExceptionResponseBody();
 
         error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
@@ -103,7 +105,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UnauthorizedAcessException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<ExceptionResponseBody> handleUserNotFoundException(UnauthorizedAcessException exc) {
+    public ResponseEntity<ExceptionResponseBody> handleUnauthorizedAcessExceptionException(UnauthorizedAcessException exc) {
         ExceptionResponseBody error = new ExceptionResponseBody();
 
         error.setPath(exc.getCause().getMessage());
@@ -114,6 +116,23 @@ public class GlobalExceptionHandler {
         log.error("Acesso não autorizado ao recurso. {}", exc.getMessage(), exc);
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ExceptionResponseBody> handleMethodArgumentNotValidExceptionException(MethodArgumentNotValidException exc) {
+        ExceptionResponseBody error = new ExceptionResponseBody();
+
+        error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        for(FieldError fieldError : exc.getBindingResult().getFieldErrors()) {
+            error.addError(fieldError.getField() + ": " + fieldError.getDefaultMessage());
+        }
+
+        log.error(exc.getMessage(), exc);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 }

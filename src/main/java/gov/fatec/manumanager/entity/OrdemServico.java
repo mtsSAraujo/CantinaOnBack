@@ -1,5 +1,6 @@
 package gov.fatec.manumanager.entity;
 
+import gov.fatec.manumanager.utils.enumStatus.StatusOrdemDeServico;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,7 +31,7 @@ public class OrdemServico {
     @Column(name = "data_conclusao")
     private LocalDateTime dataConclusao;
 
-    private String status;
+    private StatusOrdemDeServico status;
     private String prioridade;
 
     @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

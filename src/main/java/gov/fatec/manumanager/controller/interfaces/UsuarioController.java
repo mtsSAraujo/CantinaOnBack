@@ -5,6 +5,7 @@ import gov.fatec.manumanager.dto.response.UsuarioResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,7 +33,7 @@ public interface UsuarioController {
                     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
             }
     )
-    ResponseEntity<UsuarioResponseDto> findById(@PathVariable(required = true) Long id);
+    ResponseEntity<UsuarioResponseDto> findById(@PathVariable Long id);
 
     @GetMapping
     @Operation(description = "Endpoint responsável por encontrar todos os usuários")
@@ -58,7 +59,7 @@ public interface UsuarioController {
             }
     )
     ResponseEntity<UsuarioResponseDto> createUser(
-            @RequestBody UsuarioRequestDto usuarioRequestDto
+            @RequestBody @Valid UsuarioRequestDto usuarioRequestDto
     );
 
     @DeleteMapping("/{id}")
@@ -88,7 +89,7 @@ public interface UsuarioController {
             }
     )
     ResponseEntity<UsuarioResponseDto> updateUser(
-            @RequestBody UsuarioRequestDto usuarioRequestDto,
+            @RequestBody @Valid UsuarioRequestDto usuarioRequestDto,
             @PathVariable Long id
     );
 }

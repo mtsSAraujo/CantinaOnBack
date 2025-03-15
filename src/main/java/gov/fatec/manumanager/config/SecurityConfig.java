@@ -23,6 +23,7 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
 
+    // TODO: adicionar diferentes acessos a diferentes roles ("ADMINISTRADOR", "TECNICO" E "CLIENTE")
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
