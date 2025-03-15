@@ -130,7 +130,7 @@ public class GlobalExceptionHandler {
             error.addError(fieldError.getField() + ": " + fieldError.getDefaultMessage());
         }
 
-        log.error(exc.getMessage(), exc);
+        log.error(exc.getLocalizedMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }

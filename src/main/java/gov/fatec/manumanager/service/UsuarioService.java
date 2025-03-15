@@ -22,6 +22,8 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
+    private final TecnicoService tecnicoService;
+
     private final PasswordEncoder passwordEncoder;
 
     public UsuarioResponseDto findById(Long id) {
@@ -48,13 +50,14 @@ public class UsuarioService {
 
         Usuario usuarioCriado = UsuarioConverter.fromDto(usuarioRequestDto);
         usuarioCriado.setSenha(passwordEncoder.encode(usuarioRequestDto.senha()));
+        usuarioRepository.save(usuarioCriado);
 
         // Criar tecnico associado a esse usuário com valores default para especialização, disponibilidade e atribuições.
         if(usuarioRequestDto.tipoUsuario().equals(TiposDeUsuario.TECNICO)) {
-            throw new RuntimeException();
+            tecnicoService.createTecnico(usuarioCriado);
         }
 
-        return UsuarioConverter.fromEntity(usuarioRepository.save(usuarioCriado));
+        return UsuarioConverter.fromEntity(usuarioCriado);
     }
 
     public UsuarioResponseDto updateUser(Long id, UsuarioRequestDto usuarioRequestDto) {
