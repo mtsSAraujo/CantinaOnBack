@@ -3,8 +3,8 @@ package gov.fatec.manumanager.exception;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class UserNotFoundException extends RuntimeException {
-    public UserNotFoundException(String message) {
+public class UnauthorizedAcessException extends RuntimeException {
+    public UnauthorizedAcessException(String message) {
         super(message);
     }
 }

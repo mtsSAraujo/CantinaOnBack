@@ -1,6 +1,5 @@
 package gov.fatec.manumanager.config;
 
-import gov.fatec.manumanager.service.auth.UsuarioAutenticacaoService;
 import gov.fatec.manumanager.utils.jwt.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +21,6 @@ import org.springframework.security.web.header.writers.XXssProtectionHeaderWrite
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final UsuarioAutenticacaoService customUserDetailsService;
     private final JwtFilter jwtFilter;
 
     @Bean
@@ -35,7 +33,8 @@ public class SecurityConfig {
                                 "/api-docs/**",
                                 "/swagger-resources/**",
                                 "/webjars/**",
-                                "/auth/**"
+                                "/auth/**",
+                                "/swagger-ui.html"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
