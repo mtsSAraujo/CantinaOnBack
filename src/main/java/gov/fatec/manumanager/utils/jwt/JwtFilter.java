@@ -1,6 +1,5 @@
 package gov.fatec.manumanager.utils.jwt;
 
-import gov.fatec.manumanager.exception.UnauthorizedAcessException;
 import gov.fatec.manumanager.service.auth.UsuarioAutenticacaoService;
 import gov.fatec.manumanager.utils.jwt.service.JwtService;
 import jakarta.servlet.FilterChain;

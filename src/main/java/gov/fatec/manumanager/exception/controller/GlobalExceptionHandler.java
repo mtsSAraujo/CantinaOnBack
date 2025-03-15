@@ -1,9 +1,9 @@
 package gov.fatec.manumanager.exception.controller;
 
 import gov.fatec.manumanager.exception.ExceptionResponseBody;
-import gov.fatec.manumanager.exception.UnauthorizedAcessException;
-import gov.fatec.manumanager.exception.UserAlreadyExistsException;
-import gov.fatec.manumanager.exception.UserNotFoundException;
+import gov.fatec.manumanager.exception.models.UnauthorizedAcessException;
+import gov.fatec.manumanager.exception.models.UserAlreadyExistsException;
+import gov.fatec.manumanager.exception.models.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package gov.fatec.manumanager.exception;
+package gov.fatec.manumanager.exception.models;
 
 import lombok.NoArgsConstructor;
 
