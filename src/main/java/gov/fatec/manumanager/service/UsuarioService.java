@@ -52,7 +52,6 @@ public class UsuarioService {
         usuarioCriado.setSenha(passwordEncoder.encode(usuarioRequestDto.senha()));
         usuarioRepository.save(usuarioCriado);
 
-        // Criar tecnico associado a esse usuário com valores default para especialização, disponibilidade e atribuições.
         if(usuarioRequestDto.tipoUsuario().equals(TiposDeUsuario.TECNICO)) {
             tecnicoService.createTecnico(usuarioCriado);
         }
