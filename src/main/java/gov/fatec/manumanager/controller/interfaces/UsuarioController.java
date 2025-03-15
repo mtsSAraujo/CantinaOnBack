@@ -1,14 +1,16 @@
 package gov.fatec.manumanager.controller.interfaces;
 
-import gov.fatec.manumanager.dto.UsuarioRequestDto;
-import gov.fatec.manumanager.dto.UsuarioResponseDto;
+import gov.fatec.manumanager.dto.request.UsuarioRequestDto;
+import gov.fatec.manumanager.dto.response.UsuarioResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +25,11 @@ public interface UsuarioController {
     @Operation(description = "Endpoint responsável por encontrar usuário pelo seu ID")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso", content = {})
+                    @ApiResponse(responseCode = "200", description = "Usuário encontrado com sucesso"),
+                    @ApiResponse(responseCode = "400", description = "ID inválido"),
+                    @ApiResponse(responseCode = "401", description = "Usuário não possui permissao para acessar o recurso"),
+                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
             }
     )
     ResponseEntity<UsuarioResponseDto> findById(@PathVariable(required = true) Long id);
@@ -32,7 +38,10 @@ public interface UsuarioController {
     @Operation(description = "Endpoint responsável por encontrar todos os usuários")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200")
+                    @ApiResponse(responseCode = "200", description = "Usuários encontrados com sucesso"),
+                    @ApiResponse(responseCode = "401", description = "Usuário não possui permissao para acessar o recurso"),
+                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
             }
     )
     ResponseEntity<List<UsuarioResponseDto>> findAll();
@@ -41,10 +50,45 @@ public interface UsuarioController {
     @Operation(description = "Endpoint responsável pela criação de um novo usuário")
     @ApiResponses(
             value = {
-                    @ApiResponse(responseCode = "200", description = "Usuário criado com sucesso", content = {})
+                    @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso"),
+                    @ApiResponse(responseCode = "400", description = "Campo(s) de requisição inválido(s)"),
+                    @ApiResponse(responseCode = "401", description = "Usuário não possui permissao para acessar o recurso"),
+                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
             }
     )
     ResponseEntity<UsuarioResponseDto> createUser(
             @RequestBody UsuarioRequestDto usuarioRequestDto
+    );
+
+    @DeleteMapping("/{id}")
+    @Operation(description = "Endpoint responsável por deletar um usuário")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "204", description = "Usuário deletado com sucesso"),
+                    @ApiResponse(responseCode = "400", description = "ID inválido"),
+                    @ApiResponse(responseCode = "401", description = "Usuário não possui permissao para acessar o recurso"),
+                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            }
+    )
+    ResponseEntity<Void> deleteUser(
+            @PathVariable Long id
+    );
+
+    @PutMapping("/{id}")
+    @Operation(description = "Endpoint responsável por atualizar um usuário")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso"),
+                    @ApiResponse(responseCode = "400", description = "ID ou formato de requisição inválido(s)"),
+                    @ApiResponse(responseCode = "401", description = "Usuário não possui permissão para acessar o recurso"),
+                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+                    @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
+            }
+    )
+    ResponseEntity<UsuarioResponseDto> updateUser(
+            @RequestBody UsuarioRequestDto usuarioRequestDto,
+            @PathVariable Long id
     );
 }

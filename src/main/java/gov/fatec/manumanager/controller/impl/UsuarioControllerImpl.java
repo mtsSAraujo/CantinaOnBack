@@ -1,8 +1,8 @@
 package gov.fatec.manumanager.controller.impl;
 
 import gov.fatec.manumanager.controller.interfaces.UsuarioController;
-import gov.fatec.manumanager.dto.UsuarioRequestDto;
-import gov.fatec.manumanager.dto.UsuarioResponseDto;
+import gov.fatec.manumanager.dto.request.UsuarioRequestDto;
+import gov.fatec.manumanager.dto.response.UsuarioResponseDto;
 import gov.fatec.manumanager.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,6 +29,16 @@ public class UsuarioControllerImpl implements UsuarioController {
 
     @Override
     public ResponseEntity<UsuarioResponseDto> createUser(UsuarioRequestDto usuarioRequestDto) {
-        return new ResponseEntity<>(usuarioService.createUser(usuarioRequestDto), HttpStatus.OK);
+        return new ResponseEntity<>(usuarioService.createUser(usuarioRequestDto), HttpStatus.CREATED);
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteUser(Long id) {
+        return new ResponseEntity<>(usuarioService.deleteUser(id), HttpStatus.NO_CONTENT);
+    }
+
+    @Override
+    public ResponseEntity<UsuarioResponseDto> updateUser(UsuarioRequestDto usuarioRequestDto, Long id) {
+        return new ResponseEntity<>(usuarioService.updateUser(id, usuarioRequestDto), HttpStatus.OK);
     }
 }

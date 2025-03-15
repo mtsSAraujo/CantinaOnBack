@@ -1,4 +1,4 @@
-package gov.fatec.manumanager.dto;
+package gov.fatec.manumanager.dto.response;
 
 import gov.fatec.manumanager.utils.TiposDeUsuario;
 import gov.fatec.manumanager.utils.enumStatus.StatusUsuario;

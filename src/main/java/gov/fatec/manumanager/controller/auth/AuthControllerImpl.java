@@ -20,6 +20,7 @@ public class AuthControllerImpl implements AuthController {
     private final JwtService jwtService;
     private final UsuarioAutenticacaoService customUserDetailsService;
 
+    @Override
     public String login(@RequestParam String email, @RequestParam String senha) {
         try {
             Authentication authentication = authenticationManager.authenticate(

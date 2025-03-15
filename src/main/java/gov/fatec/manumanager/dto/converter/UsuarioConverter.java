@@ -1,7 +1,7 @@
 package gov.fatec.manumanager.dto.converter;
 
-import gov.fatec.manumanager.dto.UsuarioRequestDto;
-import gov.fatec.manumanager.dto.UsuarioResponseDto;
+import gov.fatec.manumanager.dto.request.UsuarioRequestDto;
+import gov.fatec.manumanager.dto.response.UsuarioResponseDto;
 import gov.fatec.manumanager.entity.Usuario;
 
 public class UsuarioConverter {
