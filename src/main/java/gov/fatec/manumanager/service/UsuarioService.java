@@ -53,7 +53,7 @@ public class UsuarioService {
         usuarioRepository.save(usuarioCriado);
 
         if(usuarioRequestDto.tipoUsuario().equals(TiposDeUsuario.TECNICO)) {
-            tecnicoService.createTecnico(usuarioCriado);
+            tecnicoService.createTechnician(usuarioCriado);
         }
 
         return UsuarioConverter.fromEntity(usuarioCriado);
