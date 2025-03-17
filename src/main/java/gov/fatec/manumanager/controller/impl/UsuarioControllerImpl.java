@@ -34,7 +34,8 @@ public class UsuarioControllerImpl implements UsuarioController {
 
     @Override
     public ResponseEntity<Void> deleteUser(Long id) {
-        return new ResponseEntity<>(usuarioService.deleteUser(id), HttpStatus.NO_CONTENT);
+        usuarioService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @Override

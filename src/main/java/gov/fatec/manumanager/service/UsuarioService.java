@@ -76,13 +76,14 @@ public class UsuarioService {
         throw new UserNotFoundException("ID: " + id + " não cadastrado");
     }
 
-    public Void deleteUser(Long id) {
+    public void deleteUser(Long id) {
         Optional<Usuario> optionalUsuarioEncontrado = usuarioRepository.findById(id);
 
-        if(optionalUsuarioEncontrado.isPresent()) {
+        if (optionalUsuarioEncontrado.isPresent()) {
             Usuario usuarioEncontrado = optionalUsuarioEncontrado.get();
             usuarioRepository.delete(usuarioEncontrado);
+        } else {
+            throw new UserNotFoundException("ID: " + id + " não cadastrado");
         }
-        throw new UserNotFoundException("ID: " + id + " não cadastrado");
     }
 }
