@@ -1,6 +1,8 @@
 package gov.fatec.manumanager.controller.interfaces;
 
+import gov.fatec.manumanager.dto.request.TecnicoRequestDto;
 import gov.fatec.manumanager.dto.request.UsuarioRequestDto;
+import gov.fatec.manumanager.dto.response.TecnicoResponseDto;
 import gov.fatec.manumanager.dto.response.UsuarioResponseDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -91,5 +93,16 @@ public interface UsuarioController {
     ResponseEntity<UsuarioResponseDto> updateUser(
             @RequestBody @Valid UsuarioRequestDto usuarioRequestDto,
             @PathVariable Long id
+    );
+
+    @PutMapping("/{id}/tech")
+    @ApiResponses(
+            value = {
+                    @ApiResponse(responseCode = "200", description = "Endpoint para atualizar um tecnico")
+            }
+    )
+    ResponseEntity<TecnicoResponseDto> updateTechnician(
+            @PathVariable Long id,
+            @RequestBody TecnicoRequestDto tecnicoRequestDto
     );
 }
