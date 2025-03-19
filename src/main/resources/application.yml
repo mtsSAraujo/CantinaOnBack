@@ -56,3 +56,6 @@ server:
     include-exception: false
   address: 0.0.0.0
   port: 8080
+
+jwt.secret: jmSOm4LD+W6hnbUxt+M1som55EzPI892DuTcPV1eKxU=
+
