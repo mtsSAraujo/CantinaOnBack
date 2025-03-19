@@ -1,6 +1,7 @@
 package gov.fatec.manumanager.exception.controller;
 
 import gov.fatec.manumanager.exception.ExceptionResponseBody;
+import gov.fatec.manumanager.exception.models.EquipamentNotFoundException;
 import gov.fatec.manumanager.exception.models.UnauthorizedAcessException;
 import gov.fatec.manumanager.exception.models.UserAlreadyExistsException;
 import gov.fatec.manumanager.exception.models.UserNotFoundException;
@@ -46,7 +47,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponseBody> handleUserNotFoundException(UserNotFoundException exc) {
         ExceptionResponseBody error = new ExceptionResponseBody();
 
-        error.setPath("/user/{id}");
+        error.setPath("/api/user/{id}");
         error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
         error.setStatus(HttpStatus.NOT_FOUND.value());
         error.addError(exc.getMessage());
@@ -62,7 +63,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponseBody> handleBadCredentialsExceptionException(BadCredentialsException exc) {
         ExceptionResponseBody error = new ExceptionResponseBody();
 
-        error.setPath("/login");
+        error.setPath("/api/auth/login");
         error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.addError(exc.getMessage());
@@ -133,6 +134,22 @@ public class GlobalExceptionHandler {
         log.error(exc.getLocalizedMessage());
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(EquipamentNotFoundException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseEntity<ExceptionResponseBody> handleUserNotFoundException(EquipamentNotFoundException exc) {
+        ExceptionResponseBody error = new ExceptionResponseBody();
+
+        error.setPath("/api/equipament/{id}");
+        error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+        error.setStatus(HttpStatus.NOT_FOUND.value());
+        error.addError(exc.getMessage());
+
+        log.error(exc.getMessage(), exc);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
 }
