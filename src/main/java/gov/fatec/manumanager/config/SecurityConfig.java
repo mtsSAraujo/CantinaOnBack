@@ -55,7 +55,8 @@ public class SecurityConfig {
                                 .policyDirectives("frame-ancestors 'self'")
                         )
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // Adiciona o filtro JWT
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()));
 
         return http.build();
     }
@@ -64,8 +65,8 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://localhost:5173"));
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
