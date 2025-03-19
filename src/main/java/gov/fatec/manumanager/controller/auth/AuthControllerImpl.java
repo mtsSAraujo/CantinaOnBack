@@ -1,5 +1,6 @@
 package gov.fatec.manumanager.controller.auth;
 
+import gov.fatec.manumanager.dto.request.UserInfo;
 import gov.fatec.manumanager.service.auth.UsuarioAutenticacaoService;
 import gov.fatec.manumanager.utils.jwt.service.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -21,16 +22,16 @@ public class AuthControllerImpl implements AuthController {
     private final UsuarioAutenticacaoService customUserDetailsService;
 
     @Override
-    public String login(@RequestParam String email, @RequestParam String senha) {
+    public String login(@RequestBody UserInfo userInfo) {
         try {
             Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(email, senha)
+                    new UsernamePasswordAuthenticationToken(userInfo.email(), userInfo.password())
             );
         } catch (AuthenticationException e) {
             throw new BadCredentialsException(e.getMessage());
         }
 
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(email);
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(userInfo.email());
 
         return jwtService.generateToken(userDetails.getUsername(), userDetails.getAuthorities());
     }

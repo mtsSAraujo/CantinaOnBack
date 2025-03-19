@@ -1,8 +1,10 @@
 package gov.fatec.manumanager.controller.auth;
 
+import gov.fatec.manumanager.dto.request.UserInfo;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,7 +23,6 @@ public interface AuthController {
             }
     )
     String login(
-            @RequestParam String email,
-            @RequestParam String senha
-    );
+            @RequestBody UserInfo userInfo
+            );
 }
