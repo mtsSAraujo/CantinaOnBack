@@ -5,6 +5,7 @@ import gov.fatec.manumanager.dto.request.TecnicoRequestDto;
 import gov.fatec.manumanager.dto.request.UsuarioRequestDto;
 import gov.fatec.manumanager.dto.response.TecnicoResponseDto;
 import gov.fatec.manumanager.dto.response.UsuarioResponseDto;
+import gov.fatec.manumanager.service.TecnicoService;
 import gov.fatec.manumanager.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,8 @@ import java.util.List;
 public class UsuarioControllerImpl implements UsuarioController {
 
     private final UsuarioService usuarioService;
+
+    private final TecnicoService tecnicoService;
 
     @Override
     public ResponseEntity<UsuarioResponseDto> findById(Long id) {
@@ -47,6 +50,6 @@ public class UsuarioControllerImpl implements UsuarioController {
 
     @Override
     public ResponseEntity<TecnicoResponseDto> updateTechnician(Long id, TecnicoRequestDto tecnicoRequestDto) {
-        return null;
+        return new ResponseEntity<>(tecnicoService.updateTechnician(id, tecnicoRequestDto), HttpStatus.OK);
     }
 }

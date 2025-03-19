@@ -8,6 +8,7 @@ import gov.fatec.manumanager.exception.models.UserAlreadyExistsException;
 import gov.fatec.manumanager.exception.models.UserNotFoundException;
 import gov.fatec.manumanager.repository.UsuarioRepository;
 import gov.fatec.manumanager.utils.TiposDeUsuario;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,12 +36,10 @@ public class UsuarioService {
 
     public List<UsuarioResponseDto> findAll() {
         List<Usuario> usuarios = usuarioRepository.findAll();
-        if(usuarios.isEmpty()) {
-            throw new UserNotFoundException("Não existem usuários cadastrados");
-        }
         return usuarios.stream().map(UsuarioConverter::fromEntity).collect(Collectors.toList());
     }
 
+    @Transactional
     public UsuarioResponseDto createUser(UsuarioRequestDto usuarioRequestDto) {
         Optional<Usuario> usuarioEncontrado = usuarioRepository.findByEmail(usuarioRequestDto.email());
 
@@ -59,6 +58,7 @@ public class UsuarioService {
         return UsuarioConverter.fromEntity(usuarioCriado);
     }
 
+    @Transactional
     public UsuarioResponseDto updateUser(Long id, UsuarioRequestDto usuarioRequestDto) {
         Optional<Usuario> optionalUsuarioEncontrado = usuarioRepository.findById(id);
 
@@ -76,6 +76,7 @@ public class UsuarioService {
         throw new UserNotFoundException("ID: " + id + " não cadastrado");
     }
 
+    @Transactional
     public void deleteUser(Long id) {
         Optional<Usuario> optionalUsuarioEncontrado = usuarioRepository.findById(id);
 

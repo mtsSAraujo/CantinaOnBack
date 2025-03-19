@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public interface UsuarioController {
 
     @GetMapping("/{id}")
@@ -49,7 +49,7 @@ public interface UsuarioController {
     )
     ResponseEntity<List<UsuarioResponseDto>> findAll();
 
-    @PostMapping
+    @PostMapping("/register")
     @Operation(description = "Endpoint responsável pela criação de um novo usuário")
     @ApiResponses(
             value = {
