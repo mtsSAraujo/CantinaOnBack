@@ -31,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
         String path = request.getRequestURI();
 
         // Pula a autenticação para endpoints do Swagger, h2 e login
-        if (path.startsWith("/swagger-ui") || path.startsWith("/api-docs") || path.startsWith("/swagger-resources") || path.startsWith("/h2-console") || path.startsWith("/auth/login")) {
+        if (path.startsWith("/swagger-ui") || path.startsWith("/api-docs") || path.startsWith("/swagger-resources") || path.startsWith("/h2-console") || path.startsWith("/api/auth/login") || path.startsWith("/api/user/register")) {
             filterChain.doFilter(request, response);
             return;
         }
