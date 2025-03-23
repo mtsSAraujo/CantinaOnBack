@@ -1,6 +1,5 @@
 package gov.fatec.manumanager.dto.response;
 
-import gov.fatec.manumanager.entity.OrdemServico;
 import gov.fatec.manumanager.utils.enumStatus.StatusEquipamento;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,5 +14,5 @@ public record EquipamentoResponseDto(@NotNull long id,
                                      @NotNull StatusEquipamento status,
                                      @NotBlank LocalDateTime dataInstalacao,
                                      LocalDateTime ultimaManutencao,
-                                     List<OrdemServico> ordensServico) {
+                                     List<OrdemServicoResponseDto> ordensServico) {
 }

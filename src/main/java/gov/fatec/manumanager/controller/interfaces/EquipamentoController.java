@@ -69,7 +69,7 @@ public interface EquipamentoController {
                     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
             }
     )
-    ResponseEntity<EquipamentoResponseDto> updateEquipament(@RequestParam long id, @RequestBody EquipamentoRequestDto equipamentoRequestDto);
+    ResponseEntity<EquipamentoResponseDto> updateEquipament(@PathVariable long id, @RequestBody EquipamentoRequestDto equipamentoRequestDto);
 
     @DeleteMapping("{id}")
     @Operation(description = "Endpoint responsável pela exclusão de um equipamento")
@@ -81,5 +81,5 @@ public interface EquipamentoController {
                     @ApiResponse(responseCode = "500", description = "Erro interno do servidor")
             }
     )
-    ResponseEntity<Void> deleteEquipament(@RequestParam long id);
+    ResponseEntity<Void> deleteEquipament(@PathVariable long id);
 }

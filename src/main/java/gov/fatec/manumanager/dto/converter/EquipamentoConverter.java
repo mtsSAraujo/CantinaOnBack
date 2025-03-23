@@ -18,7 +18,7 @@ public class EquipamentoConverter {
                 equipamento.getStatus(),
                 equipamento.getDataInstalacao(),
                 equipamento.getUltimaManutencao(),
-                equipamento.getOrdensServico()
+                equipamento.getOrdensServico().stream().map(OrdemServicoConverter::fromEntity).toList()
         );
     }
 
@@ -30,7 +30,7 @@ public class EquipamentoConverter {
                 .status(equipamentoRequestDto.status())
                 .dataInstalacao(equipamentoRequestDto.dataInstalacao())
                 .ultimaManutencao(equipamentoRequestDto.ultimaManutencao() != null ? equipamentoRequestDto.ultimaManutencao() : LocalDateTime.now())
-                .ordensServico(equipamentoRequestDto.ordensServico() != null ? equipamentoRequestDto.ordensServico() : new ArrayList<>())
+                .ordensServico(new ArrayList<>())
                 .build();
     }
 }

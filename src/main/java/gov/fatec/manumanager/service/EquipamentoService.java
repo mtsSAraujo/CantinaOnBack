@@ -5,7 +5,9 @@ import gov.fatec.manumanager.dto.request.EquipamentoRequestDto;
 import gov.fatec.manumanager.dto.response.EquipamentoResponseDto;
 import gov.fatec.manumanager.entity.Equipamento;
 import gov.fatec.manumanager.exception.models.EquipamentNotFoundException;
+import gov.fatec.manumanager.exception.models.InactiveEquipamentException;
 import gov.fatec.manumanager.repository.EquipamentoRepository;
+import gov.fatec.manumanager.utils.enumStatus.StatusEquipamento;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,6 +57,13 @@ public class EquipamentoService {
         Equipamento equipamento = equipamentoRepository.findById(id).orElseThrow(
                 () -> new EquipamentNotFoundException("ID: " + id + " não corresponde a nenhum equipamento")
         );
-        equipamentoRepository.delete(equipamento);
+
+        if(equipamento.getStatus() == StatusEquipamento.DESATIVADO) {
+            throw new InactiveEquipamentException("Equipamento já está desativado");
+        } else {
+            equipamento.setStatus(StatusEquipamento.DESATIVADO);
+            equipamentoRepository.save(equipamento);
+        }
+
     }
 }
