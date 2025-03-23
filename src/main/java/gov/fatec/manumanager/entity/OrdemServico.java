@@ -1,5 +1,6 @@
 package gov.fatec.manumanager.entity;
 
+import gov.fatec.manumanager.utils.enumStatus.PrioridadeOS;
 import gov.fatec.manumanager.utils.enumStatus.StatusOrdemDeServico;
 import jakarta.persistence.*;
 import lombok.*;
@@ -32,7 +33,7 @@ public class OrdemServico {
     private LocalDateTime dataConclusao;
 
     private StatusOrdemDeServico status;
-    private String prioridade;
+    private PrioridadeOS prioridade;
 
     @OneToMany(mappedBy = "ordemServico", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Atribuicao> atribuicoes;

@@ -5,6 +5,7 @@ import gov.fatec.manumanager.dto.request.OrdemServicoRequestDto;
 import gov.fatec.manumanager.dto.response.OrdemServicoResponseDto;
 import gov.fatec.manumanager.service.OrdemServicoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,6 +17,7 @@ public class OSControllerImpl implements OSController {
 
     @Override
     public ResponseEntity<OrdemServicoResponseDto> createOS(Long equipamentId, OrdemServicoRequestDto ordemServicoRequestDto) {
-        return null;
+        OrdemServicoResponseDto ordemServico = ordemServicoService.createOS(equipamentId, ordemServicoRequestDto);
+        return new ResponseEntity<>(ordemServico, HttpStatus.CREATED);
     }
 }

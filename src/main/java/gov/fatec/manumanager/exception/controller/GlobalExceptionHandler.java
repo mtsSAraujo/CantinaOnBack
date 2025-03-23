@@ -2,6 +2,9 @@ package gov.fatec.manumanager.exception.controller;
 
 import gov.fatec.manumanager.exception.ExceptionResponseBody;
 import gov.fatec.manumanager.exception.models.EquipamentNotFoundException;
+import gov.fatec.manumanager.exception.models.InactiveEquipamentException;
+import gov.fatec.manumanager.exception.models.InactiveUserException;
+import gov.fatec.manumanager.exception.models.OSAlreadyOpenedException;
 import gov.fatec.manumanager.exception.models.UnauthorizedAcessException;
 import gov.fatec.manumanager.exception.models.UserAlreadyExistsException;
 import gov.fatec.manumanager.exception.models.UserNotFoundException;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpClientErrorException.Forbidden;
 import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 
@@ -139,7 +143,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EquipamentNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public ResponseEntity<ExceptionResponseBody> handleUserNotFoundException(EquipamentNotFoundException exc) {
+    public ResponseEntity<ExceptionResponseBody> handleEquipamentNotFoundException(EquipamentNotFoundException exc) {
         ExceptionResponseBody error = new ExceptionResponseBody();
 
         error.setPath("/api/equipament/{id}");
@@ -150,6 +154,54 @@ public class GlobalExceptionHandler {
         log.error(exc.getMessage(), exc);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
+    }
+
+    @ExceptionHandler(InactiveEquipamentException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ExceptionResponseBody> handleInactiveEquipamentException(InactiveEquipamentException exc) {
+        ExceptionResponseBody error = new ExceptionResponseBody();
+
+        error.setPath("/api/equipament/{id}");
+        error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.addError("Equipamento já encontra-se deletado");
+
+        log.error("Tentativa de deleção de equipamento ja deletado", exc);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(InactiveUserException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ExceptionResponseBody> handleInactiveUserException(InactiveUserException exc) {
+        ExceptionResponseBody error = new ExceptionResponseBody();
+
+        error.setPath("/api/user/{id}");
+        error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.addError("Usuário já encontra-se deletado");
+
+        log.error("Tentativa de deleção de usuário ja deletado", exc);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(OSAlreadyOpenedException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ExceptionResponseBody> handleOSAlreadyOpenedException(OSAlreadyOpenedException exc) {
+        ExceptionResponseBody error = new ExceptionResponseBody();
+
+        error.setPath("/api/os/{equipamentoId}");
+        error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.addError(exc.getMessage());
+
+        log.error(exc.getMessage(), exc);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 
 }
