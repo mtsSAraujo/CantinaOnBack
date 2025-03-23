@@ -4,10 +4,12 @@ import gov.fatec.manumanager.dto.request.UsuarioRequestDto;
 import gov.fatec.manumanager.dto.response.UsuarioResponseDto;
 import gov.fatec.manumanager.dto.converter.UsuarioConverter;
 import gov.fatec.manumanager.entity.Usuario;
+import gov.fatec.manumanager.exception.models.InactiveUserException;
 import gov.fatec.manumanager.exception.models.UserAlreadyExistsException;
 import gov.fatec.manumanager.exception.models.UserNotFoundException;
 import gov.fatec.manumanager.repository.UsuarioRepository;
 import gov.fatec.manumanager.utils.TiposDeUsuario;
+import gov.fatec.manumanager.utils.enumStatus.StatusUsuario;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -82,7 +84,13 @@ public class UsuarioService {
 
         if (optionalUsuarioEncontrado.isPresent()) {
             Usuario usuarioEncontrado = optionalUsuarioEncontrado.get();
-            usuarioRepository.delete(usuarioEncontrado);
+
+            if(usuarioEncontrado.getStatus() == StatusUsuario.INATIVO) {
+                throw new InactiveUserException("Usuário já está inativado no sistema");
+            }
+
+            usuarioEncontrado.setStatus(StatusUsuario.INATIVO);
+            usuarioRepository.save(usuarioEncontrado);
         } else {
             throw new UserNotFoundException("ID: " + id + " não cadastrado");
         }
