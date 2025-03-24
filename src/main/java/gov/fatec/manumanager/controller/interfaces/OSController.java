@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/os")
+@RequestMapping("/api/equipament/os")
 public interface OSController {
 
     @PostMapping("/{equipamentId}")
