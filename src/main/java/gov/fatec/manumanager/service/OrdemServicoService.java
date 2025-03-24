@@ -8,13 +8,13 @@ import gov.fatec.manumanager.entity.OrdemServico;
 import gov.fatec.manumanager.exception.models.EquipamentNotFoundException;
 import gov.fatec.manumanager.exception.models.InactiveEquipamentException;
 import gov.fatec.manumanager.exception.models.OSAlreadyOpenedException;
+import gov.fatec.manumanager.exception.models.OSNotFoundException;
 import gov.fatec.manumanager.repository.EquipamentoRepository;
 import gov.fatec.manumanager.repository.OrdemServicoRepository;
 import gov.fatec.manumanager.utils.enumStatus.StatusEquipamento;
 import gov.fatec.manumanager.utils.enumStatus.StatusOrdemDeServico;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.BadRequestException;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
@@ -68,4 +68,24 @@ public class OrdemServicoService {
 
         return null;
     }
+
+    public List<OrdemServicoResponseDto> findAll(Long equipamentoId) {
+        List<OrdemServico> ordensServico = equipamentoRepository.findById(equipamentoId)
+                .orElseThrow(() -> new EquipamentNotFoundException("Equipamento não encontrado para o ID: " + equipamentoId))
+                .getOrdensServico();
+
+        return ordensServico.stream().map(OrdemServicoConverter::fromEntity).toList();
+    }
+
+    public OrdemServicoResponseDto findById(Long equipamentoId, Long ordemServicoId) {
+        OrdemServico ordemServico = equipamentoRepository.findById(equipamentoId)
+                .orElseThrow(() -> new EquipamentNotFoundException("Equipamento não encontrado para o ID: " + equipamentoId))
+                .getOrdensServico().stream()
+                .filter(os -> os.getId().equals(ordemServicoId))
+                .findFirst()
+                .orElseThrow(() -> new OSNotFoundException("Ordem de serviço não encontrada para o ID: " + ordemServicoId));
+
+        return OrdemServicoConverter.fromEntity(ordemServico);
+    }
+
 }

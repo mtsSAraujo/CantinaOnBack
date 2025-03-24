@@ -5,6 +5,7 @@ import gov.fatec.manumanager.exception.models.EquipamentNotFoundException;
 import gov.fatec.manumanager.exception.models.InactiveEquipamentException;
 import gov.fatec.manumanager.exception.models.InactiveUserException;
 import gov.fatec.manumanager.exception.models.OSAlreadyOpenedException;
+import gov.fatec.manumanager.exception.models.OSNotFoundException;
 import gov.fatec.manumanager.exception.models.UnauthorizedAcessException;
 import gov.fatec.manumanager.exception.models.UserAlreadyExistsException;
 import gov.fatec.manumanager.exception.models.UserNotFoundException;
@@ -195,6 +196,22 @@ public class GlobalExceptionHandler {
         ExceptionResponseBody error = new ExceptionResponseBody();
 
         error.setPath("/api/os/{equipamentoId}");
+        error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.addError(exc.getMessage());
+
+        log.error(exc.getMessage(), exc);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
+    }
+
+    @ExceptionHandler(OSNotFoundException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<ExceptionResponseBody> handleOSNotFoundException(OSNotFoundException exc) {
+        ExceptionResponseBody error = new ExceptionResponseBody();
+
+        error.setPath("/api/os/{equipamentoId}/{ordemServicoId}");
         error.setTimeStamp(ZonedDateTime.now().format(DateTimeFormatter.ISO_INSTANT));
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.addError(exc.getMessage());
