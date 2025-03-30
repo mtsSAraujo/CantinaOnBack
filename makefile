@@ -1,4 +1,4 @@
-.PHONY: build up
+PHONY: build up
 
 build:
 	gradlew.bat clean build
