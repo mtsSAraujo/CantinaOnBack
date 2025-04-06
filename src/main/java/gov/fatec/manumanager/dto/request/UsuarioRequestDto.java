@@ -16,5 +16,5 @@ public record UsuarioRequestDto(
 
         @NotNull(message = "Tipo de usuário é obrigatório") TiposDeUsuario tipoUsuario,
 
-        @NotNull(message = "Status é obrigatório") StatusUsuario status
+        StatusUsuario status
         ){}

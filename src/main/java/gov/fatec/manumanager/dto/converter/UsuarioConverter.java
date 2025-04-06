@@ -3,6 +3,9 @@ package gov.fatec.manumanager.dto.converter;
 import gov.fatec.manumanager.dto.request.UsuarioRequestDto;
 import gov.fatec.manumanager.dto.response.UsuarioResponseDto;
 import gov.fatec.manumanager.entity.Usuario;
+import gov.fatec.manumanager.utils.enumStatus.StatusUsuario;
+
+import java.util.Objects;
 
 public class UsuarioConverter {
 
@@ -22,7 +25,7 @@ public class UsuarioConverter {
                 .nome(usuarioRequestDto.nome())
                 .senha(usuarioRequestDto.senha())
                 .tipoUsuario(usuarioRequestDto.tipoUsuario())
-                .status(usuarioRequestDto.status())
+                .status(usuarioRequestDto.status() == null || usuarioRequestDto.status().toString().isEmpty() ? StatusUsuario.ATIVO : usuarioRequestDto.status())
                 .build();
     }
 }
