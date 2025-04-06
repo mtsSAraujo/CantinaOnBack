@@ -7,6 +7,8 @@ import gov.fatec.manumanager.utils.enumStatus.StatusUsuario;
 
 import java.util.Objects;
 
+import static gov.fatec.manumanager.utils.enumStatus.StatusUsuario.DEFAULT;
+
 public class UsuarioConverter {
 
     public static UsuarioResponseDto fromEntity(Usuario usuario) {
@@ -25,7 +27,7 @@ public class UsuarioConverter {
                 .nome(usuarioRequestDto.nome())
                 .senha(usuarioRequestDto.senha())
                 .tipoUsuario(usuarioRequestDto.tipoUsuario())
-                .status(usuarioRequestDto.status() == null || usuarioRequestDto.status().toString().isEmpty() ? StatusUsuario.ATIVO : usuarioRequestDto.status())
+                .status(usuarioRequestDto.status() == DEFAULT ? StatusUsuario.ATIVO : usuarioRequestDto.status())
                 .build();
     }
 }
