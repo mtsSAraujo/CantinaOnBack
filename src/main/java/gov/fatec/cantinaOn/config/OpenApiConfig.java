@@ -23,8 +23,8 @@ public class OpenApiConfig {
                                 .scheme("bearer")
                                 .bearerFormat("JWT")))
                 .info(new io.swagger.v3.oas.models.info.Info()
-                        .title("ManuManager API")
+                        .title("CantinaOn API")
                         .version("1.0")
-                        .description("Aplicação de manutenção de equipamentos"));
+                        .description("Aplicação de gerenciamento de pedidos para uma cantina"));
     }
 }
